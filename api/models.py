@@ -54,3 +54,11 @@ class Paiement(models.Model):
         db_table = 'tbPaiement'
 
 
+class Approvisionnement(models.Model):
+    dateApprov = models.DateTimeField(db_column="dateApprov", auto_now=True)
+    quantite = models.FloatField(db_column="quantite")
+    refProduit = models.ForeignKey(Produit, db_column="refProduit", on_delete=models.CASCADE)
+    refFss = models.ForeignKey(Fournisseur, db_column="refFss", on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = 'tbApprovisionnement'
