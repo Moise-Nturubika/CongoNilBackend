@@ -245,3 +245,63 @@ def deleteFournisseur(request):
         status = { 'status': False, 'message': 'An exception thrown' }
         print(f"Error occured : {exc.message}")
     return JsonResponse(status)
+
+@api_view(['POST'])
+def saveApprovis(request):
+    status = { 'status': False }
+    approvSerializer = ApprovSerializer(data=request.data)
+    if approvSerializer.is_valid():
+        approv = approvSerializer.save()
+        try:
+            if approv:
+                prod = Produit.objects.get(pk=approv.refProduit.id)
+                oldQte = prod.quantite
+                prod.quantite = oldQte + approv.quantite
+                prod.save()
+                status = { 'status': True, 'message': 'Approv saved successfully'}
+            else:
+                status = { 'status': False, 'message': 'Approv not saved'}
+        except Exception as exc:
+            approv.delete()
+            print(f'Error occured ===> {exc}')
+    else:
+        status = { 'status': False, 'message': 'Approv data are not valid'}
+    return JsonResponse(status)
+
+@api_view(['GET'])
+def getAllApprov(request):
+    data = []
+    # approvs = Approvisionnement.objects.all()
+    # for appr in approvs:
+    #     detailsCmd = []
+    #     dtlCmds = DetailCommande.objects.filter(refCommande=cmd.id)
+    #     sumMontant = DetailCommande.objects.filter(refCommande=cmd.id).aggregate(Sum('montant'))
+    #     # print(f"Montant ================> {sumMontant}")
+    #     for dtl in dtlCmds:
+    #         detailsCmd.append({
+    #             'id': dtl.id,
+    #             'qte': dtl.qte,
+    #             'montant': dtl.montant,
+    #             'produit': {
+    #                 'id': dtl.refProduit.id,
+    #                 'designation': dtl.refProduit.designation,
+    #                 'prix': dtl.refProduit.prix
+    #             }
+    #         })
+    #     data.append(
+    #         {
+    #             'id': cmd.id,
+    #             'dateCommande': cmd.dateCommande,
+    #             'livraison': cmd.livraison,
+    #             'total': sumMontant['montant__sum'],
+    #             'client': {
+    #                 'id': cmd.refClient.id,
+    #                 'nom': cmd.refClient.nom,
+    #                 'prenom': cmd.refClient.prenom,
+    #                 'telephone': cmd.refClient.telephone
+    #             },
+    #             'countProduit': len(dtlCmds),
+    #             'details': detailsCmd
+    #         }
+    #     )
+    return JsonResponse(data, safe=False)

@@ -25,3 +25,8 @@ class DetailCmdSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetailCommande
         fields = '__all__'
+        
+class ApprovSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Approvisionnement
+        fields = '__all__'

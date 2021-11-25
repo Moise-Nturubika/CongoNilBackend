@@ -30,4 +30,6 @@ urlpatterns = [
     path('command/show/all', views.getAllCommands),
     path('command/save', views.saveCommande),
     path('command/delete', views.deleteCommand),
+    
+    path('approv/save', views.saveApprovis),
 ]
