@@ -292,37 +292,3 @@ def getAllApprov(request):
             }
         )
     return JsonResponse(data, safe=False)
-    # approvs = Approvisionnement.objects.all()
-    # for appr in approvs:
-    #     detailsCmd = []
-    #     dtlCmds = DetailCommande.objects.filter(refCommande=cmd.id)
-    #     sumMontant = DetailCommande.objects.filter(refCommande=cmd.id).aggregate(Sum('montant'))
-    #     # print(f"Montant ================> {sumMontant}")
-    #     for dtl in dtlCmds:
-    #         detailsCmd.append({
-    #             'id': dtl.id,
-    #             'qte': dtl.qte,
-    #             'montant': dtl.montant,
-    #             'produit': {
-    #                 'id': dtl.refProduit.id,
-    #                 'designation': dtl.refProduit.designation,
-    #                 'prix': dtl.refProduit.prix
-    #             }
-    #         })
-    #     data.append(
-    #         {
-    #             'id': cmd.id,
-    #             'dateCommande': cmd.dateCommande,
-    #             'livraison': cmd.livraison,
-    #             'total': sumMontant['montant__sum'],
-    #             'client': {
-    #                 'id': cmd.refClient.id,
-    #                 'nom': cmd.refClient.nom,
-    #                 'prenom': cmd.refClient.prenom,
-    #                 'telephone': cmd.refClient.telephone
-    #             },
-    #             'countProduit': len(dtlCmds),
-    #             'details': detailsCmd
-    #         }
-    #     )
-    return JsonResponse(data, safe=False)
