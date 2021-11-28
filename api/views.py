@@ -135,7 +135,6 @@ def getAllCommands(request):
         detailsCmd = []
         dtlCmds = DetailCommande.objects.filter(refCommande=cmd.id)
         sumMontant = DetailCommande.objects.filter(refCommande=cmd.id).aggregate(Sum('montant'))
-        # print(f"Montant ================> {sumMontant}")
         for dtl in dtlCmds:
             detailsCmd.append({
                 'id': dtl.id,
@@ -271,6 +270,28 @@ def saveApprovis(request):
 @api_view(['GET'])
 def getAllApprov(request):
     data = []
+    approvs = Approvisionnement.objects.all()
+    for appr in approvs:
+        data.append(
+            {
+                'id': appr.id,
+                'dateApprov': appr.dateApprov,
+                'quantite': appr.quantite,
+                'fournisseur': {
+                    'id': appr.refFss.id,
+                    'nom': appr.refFss.nom,
+                    'mail': appr.refFss.mail,
+                    'secteur': appr.refFss.secteur
+                },
+                'produit': {
+                    'id': appr.refProduit.id,
+                    'designation': appr.refProduit.designation,
+                    'prix': appr.refProduit.prix,
+                    'quantite': appr.refProduit.quantite
+                }
+            }
+        )
+    return JsonResponse(data, safe=False)
     # approvs = Approvisionnement.objects.all()
     # for appr in approvs:
     #     detailsCmd = []

@@ -32,4 +32,5 @@ urlpatterns = [
     path('command/delete', views.deleteCommand),
     
     path('approv/save', views.saveApprovis),
+    path('approv/show/all', views.getAllApprov),
 ]
